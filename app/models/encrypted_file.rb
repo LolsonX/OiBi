@@ -1,0 +1,2 @@
+class EncryptedFile < ApplicationRecord
+end
