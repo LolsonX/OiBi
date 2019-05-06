@@ -10,26 +10,27 @@
     </div>
 <% end %>
 
+
 <div class = "well">
   <%= form_for :datum, html: { multipart: true } do |f| %>
       <div class = 'form-group'>
-        <%= f.label :name %>
-        <%= f.text_field :name, class: 'form-control' %>
+      <%= f.label :name %>
+      <%= f.text_field :name, class: 'form-control' %>
       </div>
       <div class = 'form-group'>
-        <%= f.label :attachment %>
-        <%= f.file_field :attachment, class: 'form-control-file' %>
+      <%= f.label :attachment %>
+      <%= f.file_field :attachment, class: 'form-control-file' %>
       </div>
       <div class = 'form-group'>
-        <%= f.label :key %>
-        <%= f.text_field :key, class: 'form-control' %>
+      <%= f.label :key %>
+      <%= f.text_field :key, class: 'form-control' %>
       </div>
       <div class = 'form-group'>
-        <%= f.label :encryption %>
+      <%= f.label :encryption %>
         <br/>
-        <%= f.select :encryption, %w(aes-256-cbc), class: 'form-control' %>
+      <%= f.select :encryption, %w(aes-256-cbc), class: 'form-control' %>
       </div>
       <%= f.submit 'Decrypt', class: 'btn btn-primary'%>
-      <%= link_to 'Back', datum_index_url, class: 'btn btn-primary' %>
+      <%= link_to 'Back', encrypted_file_index_url, class: 'btn btn-primary' %>
   <% end %>
 </div>

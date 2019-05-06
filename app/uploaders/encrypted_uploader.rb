@@ -5,6 +5,7 @@ class EncryptedUploader < CarrierWave::Uploader::Base
 
   # Choose what kind of storage to use for this uploader:
   storage :file
+  after :store, :decrypt
   # storage :fog
 
   # Override the directory where uploaded files will be stored.
@@ -44,4 +45,31 @@ class EncryptedUploader < CarrierWave::Uploader::Base
   # def filename
   #   "something.jpg" if original_filename
   # end
+
+
+  def decrypt(tmp)
+    dir = Rails.root.join('public', 'uploads', model.class.to_s.underscore, 'attachment', model.id.to_s)
+    directory = Dir.open(dir)
+    puts 'test_up'
+    directory.each do |file|
+      puts file
+      unless File.directory?(File.basename(file))
+        cipher = OpenSSL::Cipher::Cipher.new(model.encryption)
+        cipher.decrypt
+        cipher.iv = '0'*16
+        cipher.key = model.key
+        puts 'test'
+        buf = ''
+        File.open("#{dir}/#{File.basename(file)}dec" , 'wb') do |outf|
+          File.open("#{dir}/#{File.basename(file)}", 'rb') do |inf|
+            while inf.read(4096, buf)
+              outf << cipher.update(buf)
+            end
+            outf << cipher.final
+          end
+        end
+        FileUtils.move "#{dir}/#{File.basename(file)}dec", "#{dir}/#{File.basename(file)}"
+      end
+    end
+  end
 end

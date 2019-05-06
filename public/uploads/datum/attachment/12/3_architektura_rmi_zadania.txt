@@ -1,0 +1,29 @@
+Programowanie dla sieci
+
+Æwiczenia do samodzielnego wykonania (RMI) - podstawowe
+-----------------------------------------------
+Pkt.1. Zrealizowaæ program DateRmi lokalnie
+Pkt.2. Zrealizowaæ program DBRmi lokalnie i zmodyfikowaæ po³aczenie z baz¹ danych wykorzystuj¹c poni¿sze dane:
+	
+	Driver: org.postgresql.Driver
+	Url: jdbc:postgresql://62.108.181.229:5432/shop1
+	login: student
+	haslo: student
+	baza danych: shop1
+	tabela: Customer_tbl
+ 
+Pkt.5. Zrealizowaæ system RMICallback lokalnie
+
+Dodatkowe zadania do æwiczenia 3 (RMI)
+-----------------------------------------------
+1. Napisaæ aplikacjê realizuj¹c¹ us³ugê echo (port 7) z wykorzystaniem protoko³u RMI.
+
+2. Wykorzystuj¹c technologiê RMI CaLLback napisaæ aplikacjê realizuj¹c¹ prosty kalkulator (dodawanie, odejmowanie, mno¿enie i dzielenie dwóch liczb) wg. za³o¿eñ:
+- klient wykonuje zdaln¹ metodê oblicz z parametrami okreœlaj¹cymi dwie liczby i rodzajem operacji,
+- serwer wykonuje zdaln¹ metodê realizuj¹c¹ zadane dzia³anie (np. dodaj) po stronie klienta  
+
+
+
+
+
+

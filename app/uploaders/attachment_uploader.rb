@@ -25,6 +25,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
 
   # Process files as they are uploaded:
   def encrypt(tmp)
+    begin
     dir = Rails.root.join('public', 'uploads', model.class.to_s.underscore, 'attachment', model.id.to_s)
     directory = Dir.open(dir)
     puts 'test_up'
@@ -49,32 +50,11 @@ class AttachmentUploader < CarrierWave::Uploader::Base
       end
     end
     #decrypt(model.encryption, model.key, '0'*16)
-  end
-
-  def decrypt(cipher, key, iv)
-    dir = Rails.root.join('public', 'uploads', model.class.to_s.underscore, 'attachment', model.id.to_s)
-    directory = Dir.open(dir)
-    puts 'test_up'
-    directory.each do |file|
-      puts file
-      unless File.directory?(File.basename(file))
-        cipher = OpenSSL::Cipher::Cipher.new(cipher)
-        cipher.decrypt
-        cipher.iv = iv
-        cipher.key = key
-        puts 'test'
-        buf = ''
-        File.open("#{dir}/#{File.basename(file)}" +'dec'+File.extname(file), 'wb') do |outf|
-          File.open("#{dir}/#{File.basename(file)}", 'rb') do |inf|
-            while inf.read(4096, buf)
-              outf << cipher.update(buf)
-            end
-            outf << cipher.final
-          end
-        end
-      end
+    rescue Exception => e
+      model.errors.add(:base, e.message)
     end
   end
+
 
   # Create different versions of your uploaded files:
   # version :thumb do

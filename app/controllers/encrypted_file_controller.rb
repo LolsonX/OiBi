@@ -1,18 +1,18 @@
-class DatumController < ApplicationController
+class EncryptedFileController < ApplicationController
   def index
-    @data = Datum.all
+    @data = EncryptedFile.all
   end
 
   def new
-    @datum = Datum.new
+    @datum = EncryptedFile.new
   end
 
   def create
-    @data = Datum.new(datum_params.except(:attachment))
+    @data = EncryptedFile.new(datum_params.except(:attachment))
 
-    if @data.save
+    if @data.valid?
       @data.attachment = datum_params.delete :attachment
-      redirect_to datum_index_url,
+      redirect_to encrypted_file_index_url,
                   notice: "The file #{@data.name} has been uploaded." and return if @data.save
       render 'new'
     else
@@ -21,9 +21,9 @@ class DatumController < ApplicationController
   end
 
   def destroy
-    @data = Datum.find(params[:id])
+    @data = EncryptedFile.find(params[:id])
     @data.destroy
-    redirect_to datum_index_url, notice: "The file #{@data.name} has been deleted"
+    redirect_to encrypted_file_index_url, notice: "The file #{@data.name} has been deleted"
   end
 
   private
