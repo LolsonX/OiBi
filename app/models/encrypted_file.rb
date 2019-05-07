@@ -15,8 +15,8 @@ class EncryptedFile < ApplicationRecord
         return true if self.key.length == 32
         self.errors.add :key, "#{self.encryption} needs 32 letters long key"
       when 'cast5-cbc'
-        return true if self.key.length >= 5 and self.key.length <=16
-        self.errors.add :key, 'CAST5 key must be between 5 and 16 signs long'
+        return true if self.key.length ==16
+        self.errors.add :key, 'CAST5 key must be 16 signs long'
       when 'des-ede3-cbc'
         return true if self.key.length == 21
         self.errors.add :key, '3DES key must be 21 signs long'

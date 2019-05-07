@@ -19,8 +19,8 @@ class Datum < ApplicationRecord
         self.errors.add :key, "#{self.encryption} needs 32 letters long key"
         return false
       when 'cast5-cbc'
-        return true if self.key.length >= 5 and self.key.length <=16
-        self.errors.add :key, 'CAST5 key must be between 5 and 16 signs long'
+        return true if self.key.length ==16
+        self.errors.add :key, 'CAST5 key must be 16 signs long'
         return false
       when 'des-ede3-cbc'
         return true if self.key.length == 21

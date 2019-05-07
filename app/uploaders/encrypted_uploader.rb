@@ -57,6 +57,7 @@ class EncryptedUploader < CarrierWave::Uploader::Base
         begin
         cipher = OpenSSL::Cipher::Cipher.new(model.encryption)
         cipher.decrypt
+
         cipher.iv = '0'*16
         cipher.key = model.key
         puts 'test'

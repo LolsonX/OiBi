@@ -34,7 +34,14 @@ class AttachmentUploader < CarrierWave::Uploader::Base
         begin
           cipher = OpenSSL::Cipher::Cipher.new(model.encryption)
           cipher.encrypt
-          cipher.iv = '0'*16
+          case model.encryption
+            when 'blowfish', 'des-ede3-cbc', 'cast5-cbc'
+              cipher.iv = '0'* 8
+            when 'aes-256-cbc', 'aria-256-cbc'
+              cipher.iv = '0'*16
+            else
+              false
+          end
           cipher.key = model.key
           puts 'test'
           buf = ''
@@ -48,6 +55,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
           end
           FileUtils.move "#{dir}/#{File.basename(file)}.enc", "#{dir}/#{File.basename(file)}"
         rescue Exception => e
+          puts e
           FileUtils.remove "#{dir}/#{File.basename(file)}"
         end
       end
