@@ -4,7 +4,7 @@ class DatumController < ApplicationController
   end
 
   def new
-    @datum = Datum.new
+    @data = Datum.new
   end
 
   def create
@@ -29,6 +29,6 @@ class DatumController < ApplicationController
   private
 
   def datum_params
-    params.require(:datum).permit(:name, :attachment, :key, :encryption)
+    params.require(:data).permit(:name, :attachment, :key, :encryption)
   end
 end

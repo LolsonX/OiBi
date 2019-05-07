@@ -54,6 +54,7 @@ class EncryptedUploader < CarrierWave::Uploader::Base
     directory.each do |file|
       puts file
       unless File.directory?(File.basename(file))
+        begin
         cipher = OpenSSL::Cipher::Cipher.new(model.encryption)
         cipher.decrypt
         cipher.iv = '0'*16
@@ -69,7 +70,11 @@ class EncryptedUploader < CarrierWave::Uploader::Base
           end
         end
         FileUtils.move "#{dir}/#{File.basename(file)}dec", "#{dir}/#{File.basename(file)}"
+        rescue Exception => e
+          FileUtils.remove "#{dir}/#{File.basename(file)}"
+        end
       end
+
     end
   end
 end

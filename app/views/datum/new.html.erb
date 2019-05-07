@@ -1,8 +1,8 @@
-<% unless @datum.errors.empty? %>
+<% unless @datq.errors.empty? %>
     <div class = "alert alert-error">
 
       <ul>
-        <% @datum.errors.full_messages.each do |msg| %>
+        <% @data.errors.full_messages.each do |msg| %>
             <li><%= msg %></li>
         <% end %>
       </ul>
@@ -11,7 +11,7 @@
 <% end %>
 
 <div class = "well">
-  <%= form_for :datum, html: { multipart: true } do |f| %>
+  <%= form_for :data, html: { multipart: true } do |f| %>
       <div class = 'form-group'>
         <%= f.label :name %>
         <%= f.text_field :name, class: 'form-control' %>
@@ -27,7 +27,7 @@
       <div class = 'form-group'>
         <%= f.label :encryption %>
         <br/>
-        <%= f.select :encryption, %w(aes-256-cbc), class: 'form-control' %>
+        <%= f.select :encryption, %w(aes-256-cbc aria-256-cbc blowfish cast5-cbc des-ede3-cbc), class: 'form-control' %>
       </div>
       <%= f.submit 'Decrypt', class: 'btn btn-primary'%>
       <%= link_to 'Back', datum_index_url, class: 'btn btn-primary' %>

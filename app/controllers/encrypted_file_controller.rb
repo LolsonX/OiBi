@@ -4,20 +4,16 @@ class EncryptedFileController < ApplicationController
   end
 
   def new
-    @datum = EncryptedFile.new
+    @data = EncryptedFile.new
   end
 
   def create
     @data = EncryptedFile.new(datum_params.except(:attachment))
-
-    if @data.valid?
-      @data.attachment = datum_params.delete :attachment
-      redirect_to encrypted_file_index_url,
+    @data.attachment = datum_params.delete :attachment
+    @data.valid?
+    redirect_to encrypted_file_index_url,
                   notice: "The file #{@data.name} has been uploaded." and return if @data.save
-      render 'new'
-    else
-      render 'new'
-    end
+    render 'new'
   end
 
   def destroy
@@ -29,6 +25,6 @@ class EncryptedFileController < ApplicationController
   private
 
   def datum_params
-    params.require(:datum).permit(:name, :attachment, :key, :encryption)
+    params.require(:data).permit(:name, :attachment, :key, :encryption)
   end
 end

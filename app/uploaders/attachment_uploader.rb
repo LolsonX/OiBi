@@ -25,34 +25,34 @@ class AttachmentUploader < CarrierWave::Uploader::Base
 
   # Process files as they are uploaded:
   def encrypt(tmp)
-    begin
     dir = Rails.root.join('public', 'uploads', model.class.to_s.underscore, 'attachment', model.id.to_s)
     directory = Dir.open(dir)
     puts 'test_up'
     directory.each do |file|
       puts file
       unless File.directory?(File.basename(file))
-      cipher = OpenSSL::Cipher::Cipher.new(model.encryption)
-      cipher.encrypt
-      cipher.iv = '0'*16
-      cipher.key = model.key
-      puts 'test'
-      buf = ''
-      File.open("#{dir}/#{File.basename(file)}" +'.enc', 'wb') do |outf|
-        File.open("#{dir}/#{File.basename(file)}", 'rb') do |inf|
-          while inf.read(4096, buf)
-            outf << cipher.update(buf)
+        begin
+          cipher = OpenSSL::Cipher::Cipher.new(model.encryption)
+          cipher.encrypt
+          cipher.iv = '0'*16
+          cipher.key = model.key
+          puts 'test'
+          buf = ''
+          File.open("#{dir}/#{File.basename(file)}" +'.enc', 'wb') do |outf|
+            File.open("#{dir}/#{File.basename(file)}", 'rb') do |inf|
+              while inf.read(4096, buf)
+                outf << cipher.update(buf)
+              end
+              outf << cipher.final
+            end
           end
-          outf << cipher.final
+          FileUtils.move "#{dir}/#{File.basename(file)}.enc", "#{dir}/#{File.basename(file)}"
+        rescue Exception => e
+          FileUtils.remove "#{dir}/#{File.basename(file)}"
         end
-      end
-        FileUtils.move "#{dir}/#{File.basename(file)}.enc", "#{dir}/#{File.basename(file)}"
       end
     end
     #decrypt(model.encryption, model.key, '0'*16)
-    rescue Exception => e
-      model.errors.add(:base, e.message)
-    end
   end
 
 
